@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Navigation from "./Navigation";
 import HomePage from "../pages/HomePage";
 import AddPage from "../pages/AddPage";
+import RegisterPage from "../pages/RegisterPage";
 
 class ContactApp extends React.Component {
   constructor(props) {
@@ -21,25 +22,25 @@ class ContactApp extends React.Component {
           <main>
             <Routes>
               <Route path="/*" element={<p>Halaman Login</p>} />
-              <Route path="/register" element={<p>Halaman Register</p>} />
+              <Route path="/register" element={<RegisterPage />} />
             </Routes>
           </main>
         </div>
       );
     }
-  }
 
-  render() {
     return (
       <div className="contact-app">
         <header className="contact-app__header">
           <h1>Aplikasi Kontak</h1>
           <Navigation />
+        </header>
+        <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/add" element={<AddPage />} />
           </Routes>
-        </header>
+        </main>
       </div>
     );
   }
