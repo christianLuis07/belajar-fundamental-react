@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FiHome, FiPlusCircle } from "react-icons/fi";
+import PropTypes from "prop-types";
+import { FiHome, FiPlusCircle, FiLogOut } from "react-icons/fi";
 
-function Navigation() {
+function Navigation({ onLogout, name }) {
   return (
     <nav className="navigation">
       <ul>
@@ -16,9 +17,19 @@ function Navigation() {
             <FiPlusCircle />
           </Link>
         </li>
+        <li>
+          <button onClick={onLogout}>
+            {name}
+            <FiLogOut />
+          </button>
+        </li>
       </ul>
     </nav>
   );
 }
+
+Navigation.propTypes = {
+  onLogout: PropTypes.func.isRequired,
+};
 
 export default Navigation;
