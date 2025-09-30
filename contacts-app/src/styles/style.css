@@ -1,134 +1,179 @@
+/* Reset & Base */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --bg-color: #f9f9f9;
+  --text-color: #1a1a1a;
+  --nav-color: #1a1a1a;
+  --card-bg: #ffffff;
+  --card-border: #e0e0e0;
+  --accent-color: #4f46e5; /* Indigo */
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e5e5e5;
+  --nav-color: #e5e5e5;
+  --card-bg: #1e1e1e;
+  --card-border: #333;
+  --accent-color: #6366f1; /* Lighter indigo */
+}
+
 body {
   font-family: "Inter", sans-serif;
-  background-color: whitesmoke;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  line-height: 1.6;
 }
 
-img {
-  width: 100%;
-}
-
+/* Layout */
 .contact-app {
   max-width: 800px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 20px;
 }
 
+/* Header */
 .contact-app__header {
   display: flex;
   align-items: center;
-  padding: 32px 0;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--card-border);
 }
 
 .contact-app__header h1 {
-  font-weight: normal;
-  font-size: 32px;
+  font-weight: 600;
+  font-size: 28px;
   flex: 1;
+  color: var(--accent-color);
+  transition: color 0.4s ease;
 }
 
+/* Navigation */
 .navigation ul {
   display: flex;
   align-items: center;
+  gap: 16px;
 }
 
 .navigation ul li {
-  display: inline-block;
-  padding: 16px;
+  list-style: none;
 }
 
-.navigation ul li a {
-  font-size: 28px;
-  color: black;
-}
-
+.navigation ul li a,
 .navigation ul li button {
-  background-color: transparent;
+  background: transparent;
   font-family: "Inter", sans-serif;
-  border: 0;
-  font-size: 28px;
+  border: none;
+  font-size: 26px;
   cursor: pointer;
+  color: var(--nav-color);
+  transition: color 0.3s ease, transform 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
+.navigation ul li a:hover,
+.navigation ul li button:hover {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+/* Contact Item */
 .contact-item {
   display: flex;
   align-items: center;
-  margin: 24px 0;
-  border: 2px dashed black;
+  margin: 20px 0;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 12px;
+  transition: background-color 0.4s ease, border-color 0.4s ease,
+    transform 0.2s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-color);
 }
 
 .contact-item__image img {
   width: 64px;
+  height: 64px;
+  object-fit: cover;
   border-radius: 50%;
+  border: 2px solid var(--accent-color);
 }
 
 .contact-item__body {
-  margin-left: 8px;
-  padding-left: 8px;
-  border-left: 1px solid #aaa;
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--card-border);
   flex: 1;
 }
 
 .contact-item__title {
-  padding: 4px 0;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .contact-item__username {
-  font-weight: lighter;
+  font-weight: 300;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 .contact-item__delete {
-  padding: 8px;
-  font-size: 28px;
-  color: red;
-  background-color: transparent;
+  padding: 6px;
+  font-size: 22px;
+  color: crimson;
+  background: transparent;
   border: 0;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
+.contact-item__delete:hover {
+  transform: scale(1.2);
+}
+
+/* Search Bar */
 .search-bar {
   display: block;
   width: 100%;
   margin: 16px 0;
   padding: 12px;
-  background-color: transparent;
+  background: var(--card-bg);
   font-family: "Inter", sans-serif;
-  border: 2px dashed black;
-  border-radius: 4px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--text-color);
+  transition: background-color 0.4s ease, border-color 0.4s ease,
+    color 0.4s ease;
 }
 
-.login-page h2,
-.register-page h2 {
-  font-weight: normal;
-}
-
-.login-input,
-.register-input,
-.contact-input {
-  margin-top: 16px;
-}
-
+/* Forms (Login, Register, Contact Input) */
 .login-input input,
 .register-input input,
 .contact-input input {
   display: block;
-  padding: 16px;
+  padding: 14px;
   width: 100%;
   margin: 8px 0;
-  font-size: 24px;
-  background-color: transparent;
-  border: 2px dashed black;
+  font-size: 16px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
+  color: var(--text-color);
+  transition: background-color 0.4s ease, border-color 0.4s ease,
+    color 0.4s ease;
 }
 
 .login-input button,
@@ -136,10 +181,20 @@ img {
 .contact-input button {
   display: block;
   width: 100%;
-  padding: 16px;
-  font-size: 24px;
-  background-color: tan;
-  border: 2px dashed black;
+  padding: 14px;
+  font-size: 16px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
   border-radius: 8px;
   margin: 16px 0;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.login-input button:hover,
+.register-input button:hover,
+.contact-input button:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
 }

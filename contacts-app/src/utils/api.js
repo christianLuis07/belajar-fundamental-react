@@ -12,11 +12,12 @@ function putAccessToken(token) {
 
 // async function untuk fetch
 async function fetchWithToken(url, options = {}) {
+  const token = getAccessToken();
   return fetch(url, {
     ...options,
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${getAccessToken()}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   });
 }

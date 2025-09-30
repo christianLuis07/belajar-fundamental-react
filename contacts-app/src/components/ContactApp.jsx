@@ -6,6 +6,7 @@ import AddPage from "../pages/AddPage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import { getUserLogged, putAccessToken } from "../utils/api";
+import { LocaleProvider } from "../contexts/LocaleContext";
 
 class ContactApp extends React.Component {
   constructor(props) {
@@ -13,6 +14,36 @@ class ContactApp extends React.Component {
     this.state = {
       authedUser: null,
       initializing: true,
+      LocaleContext: {
+        locale: localStorage.getItem("locale") || "id",
+        toggleLocale: () => {
+          this.setState((prevState) => {
+            const newLocale =
+              prevState.LocaleContext.locale === "id" ? "en" : "id";
+            localStorage.setItem("locale", newLocale);
+            return {
+              LocaleContext: {
+                ...prevState.LocaleContext,
+                locale: newLocale,
+              },
+            };
+          });
+        },
+        theme: localStorage.getItem("theme") || "light",
+        toggleTheme: () => {
+          this.setState((prevState) => {
+            const newTheme =
+              prevState.LocaleContext.theme === "light" ? "dark" : "light";
+            localStorage.setItem("theme", newTheme);
+            return {
+              LocaleContext: {
+                ...prevState.LocaleContext,
+                theme: newTheme,
+              },
+            };
+          });
+        },
+      },
     };
 
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
@@ -21,13 +52,25 @@ class ContactApp extends React.Component {
 
   async componentDidMount() {
     const { data } = await getUserLogged();
-
+    document.documentElement.setAttribute(
+      "data-theme",
+      this.state.LocaleContext.theme
+    );
     this.setState(() => {
       return {
         authedUser: data,
         initializing: false,
       };
     });
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.LocaleContext.theme !== this.state.LocaleContext.theme) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        this.state.LocaleContext.theme
+      );
+    }
   }
 
   async onLoginSuccess({ accessToken }) {
@@ -47,7 +90,7 @@ class ContactApp extends React.Component {
         authedUser: null,
       };
     });
-    putAccessToken("");
+    localStorage.removeItem("accessToken");
   }
   render() {
     if (this.state.initializing) {
@@ -56,39 +99,51 @@ class ContactApp extends React.Component {
 
     if (this.state.authedUser === null) {
       return (
-        <div className="contact-app">
-          <header className="contact-app__header">
-            <h1>Aplikasi Kontak</h1>
-          </header>
-          <main>
-            <Routes>
-              <Route
-                path="/*"
-                element={<LoginPage loginSuccess={this.onLoginSuccess} />}
-              />
-              <Route path="/register" element={<RegisterPage />} />
-            </Routes>
-          </main>
-        </div>
+        <LocaleProvider value={this.state.LocaleContext}>
+          <div className="contact-app">
+            <header className="contact-app__header">
+              <h1>
+                {this.state.LocaleContext.locale === "id"
+                  ? "Aplikasi Kontak"
+                  : "Contact App"}
+              </h1>
+            </header>
+            <main>
+              <Routes>
+                <Route
+                  path="/*"
+                  element={<LoginPage loginSuccess={this.onLoginSuccess} />}
+                />
+                <Route path="/register" element={<RegisterPage />} />
+              </Routes>
+            </main>
+          </div>
+        </LocaleProvider>
       );
     }
 
     return (
-      <div className="contact-app">
-        <header className="contact-app__header">
-          <h1>Aplikasi Kontak</h1>
-          <Navigation
-            onLogout={this.onLogout}
-            name={this.state.authedUser.name}
-          />
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/add" element={<AddPage />} />
-          </Routes>
-        </main>
-      </div>
+      <LocaleProvider value={this.state.LocaleContext}>
+        <div className="contact-app">
+          <header className="contact-app__header">
+            <h1>
+              {this.state.LocaleContext.locale === "id"
+                ? "Aplikasi Kontak"
+                : "Contact App"}
+            </h1>
+            <Navigation
+              onLogout={this.onLogout}
+              name={this.state.authedUser ? this.state.authedUser.name : null}
+            />
+          </header>
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/add" element={<AddPage />} />
+            </Routes>
+          </main>
+        </div>
+      </LocaleProvider>
     );
   }
 }
