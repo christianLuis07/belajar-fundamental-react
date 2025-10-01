@@ -1,0 +1,139 @@
+// class ContactApp extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       authedUser: null,
+//       initializing: true,
+//       LocaleContext: {
+//         locale: localStorage.getItem("locale") || "id",
+//         toggleLocale: () => {
+//           this.setState((prevState) => {
+//             const newLocale =
+//               prevState.LocaleContext.locale === "id" ? "en" : "id";
+//             localStorage.setItem("locale", newLocale);
+//             return {
+//               LocaleContext: {
+//                 ...prevState.LocaleContext,
+//                 locale: newLocale,
+//               },
+//             };
+//           });
+//         },
+//         theme: localStorage.getItem("theme") || "light",
+//         toggleTheme: () => {
+//           this.setState((prevState) => {
+//             const newTheme =
+//               prevState.LocaleContext.theme === "light" ? "dark" : "light";
+//             localStorage.setItem("theme", newTheme);
+//             return {
+//               LocaleContext: {
+//                 ...prevState.LocaleContext,
+//                 theme: newTheme,
+//               },
+//             };
+//           });
+//         },
+//       },
+//     };
+
+//     this.onLoginSuccess = this.onLoginSuccess.bind(this);
+//     this.onLogout = this.onLogout.bind(this);
+//   }
+
+//   async componentDidMount() {
+//     const { data } = await getUserLogged();
+//     document.documentElement.setAttribute(
+//       "data-theme",
+//       this.state.LocaleContext.theme
+//     );
+//     this.setState(() => {
+//       return {
+//         authedUser: data,
+//         initializing: false,
+//       };
+//     });
+//   }
+
+//   async componentDidUpdate(prevProps, prevState) {
+//     if (prevState.LocaleContext.theme !== this.state.LocaleContext.theme) {
+//       document.documentElement.setAttribute(
+//         "data-theme",
+//         this.state.LocaleContext.theme
+//       );
+//     }
+//   }
+
+//   async onLoginSuccess({ accessToken }) {
+//     putAccessToken(accessToken);
+//     const { data } = await getUserLogged();
+
+//     this.setState(() => {
+//       return {
+//         authedUser: data,
+//       };
+//     });
+//   }
+
+//   onLogout() {
+//     this.setState(() => {
+//       return {
+//         authedUser: null,
+//       };
+//     });
+//     localStorage.removeItem("accessToken");
+//   }
+//   render() {
+//     if (this.state.initializing) {
+//       return null;
+//     }
+
+//     if (this.state.authedUser === null) {
+//       return (
+//         <LocaleProvider value={this.state.LocaleContext}>
+//           <div className="contact-app">
+//             <header className="contact-app__header">
+//               <h1>
+//                 {this.state.LocaleContext.locale === "id"
+//                   ? "Aplikasi Kontak"
+//                   : "Contact App"}
+//               </h1>
+//             </header>
+//             <main>
+//               <Routes>
+//                 <Route
+//                   path="/*"
+//                   element={<LoginPage loginSuccess={this.onLoginSuccess} />}
+//                 />
+//                 <Route path="/register" element={<RegisterPage />} />
+//               </Routes>
+//             </main>
+//           </div>
+//         </LocaleProvider>
+//       );
+//     }
+
+//     return (
+//       <LocaleProvider value={this.state.LocaleContext}>
+//         <div className="contact-app">
+//           <header className="contact-app__header">
+//             <h1>
+//               {this.state.LocaleContext.locale === "id"
+//                 ? "Aplikasi Kontak"
+//                 : "Contact App"}
+//             </h1>
+//             <Navigation
+//               onLogout={this.onLogout}
+//               name={this.state.authedUser ? this.state.authedUser.name : null}
+//             />
+//           </header>
+//           <main>
+//             <Routes>
+//               <Route path="/" element={<HomePage />} />
+//               <Route path="/add" element={<AddPage />} />
+//             </Routes>
+//           </main>
+//         </div>
+//       </LocaleProvider>
+//     );
+//   }
+// }
