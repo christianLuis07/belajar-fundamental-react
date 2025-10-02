@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/data";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const NoteItem = ({ note, onDelete, onArchive }) => {
+  const { t } = useLanguage();
+
   const handleDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (window.confirm("Kamu yakin ingin menghapus catatan ini?")) {
-      onDelete(note.id);
-    }
+    onDelete(note.id);
   };
 
   const handleArchive = (e) => {
@@ -34,10 +35,10 @@ const NoteItem = ({ note, onDelete, onArchive }) => {
           }`}
           onClick={handleArchive}
         >
-          {note.archived ? "Unarchive" : "Archive"}
+          {note.archived ? t("unarchive") : t("archive")}
         </button>
         <button className="btn btn-small btn-danger" onClick={handleDelete}>
-          Delete
+          {t("delete")}
         </button>
       </div>
     </div>

@@ -1,10 +1,12 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getNoteById, formatDate } from "../utils/data";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const DetailPage = ({ notes, onDelete, onArchive }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const note = getNoteById(notes, id);
 
@@ -13,10 +15,10 @@ const DetailPage = ({ notes, onDelete, onArchive }) => {
       <div className="container">
         <div className="not-found">
           <h1>404</h1>
-          <h2>Note tidak ditemukan</h2>
-          <p>Note yang kamu cari tidak ditemukan</p>
+          <h2>{t("noteNotFound")}</h2>
+          <p>{t("noteNotFoundDesc")}</p>
           <button className="btn btn-primary" onClick={() => navigate("/")}>
-            Back to Home
+            {t("backToHome")}
           </button>
         </div>
       </div>
@@ -24,7 +26,7 @@ const DetailPage = ({ notes, onDelete, onArchive }) => {
   }
 
   const handleDelete = () => {
-    if (window.confirm("Kamu yakin ingin menghapus catatan ini?")) {
+    if (window.confirm(t("deleteConfirm"))) {
       onDelete(note.id);
       navigate("/");
     }
@@ -38,6 +40,7 @@ const DetailPage = ({ notes, onDelete, onArchive }) => {
   const handleBack = () => {
     navigate(-1);
   };
+
   return (
     <div className="container">
       <div className="card">
@@ -45,7 +48,7 @@ const DetailPage = ({ notes, onDelete, onArchive }) => {
           <h1 className="detail-title">{note.title}</h1>
         </div>
         <div className="detail-meta">
-          Dibuat pada {formatDate(note.createdAt)}
+          {t("createdAt")} {formatDate(note.createdAt)}
           {note.archived && (
             <span
               style={{
@@ -58,23 +61,23 @@ const DetailPage = ({ notes, onDelete, onArchive }) => {
                 fontWeight: "500",
               }}
             >
-              Arsip
+              {t("archived")}
             </span>
           )}
         </div>
         <div className="detail-body">{note.body}</div>
         <div className="detail-actions">
           <button className="btn btn-secondary" onClick={handleBack}>
-            Kembali
+            {t("back")}
           </button>
           <button
             className={`btn ${note.archived ? "btn-primary" : "btn-secondary"}`}
             onClick={handleArchive}
           >
-            {note.archived ? "Buka" : "Arsipkan"}
+            {note.archived ? t("unarchive") : t("archive")}
           </button>
           <button className="btn btn-danger" onClick={handleDelete}>
-            Hapus
+            {t("delete")}
           </button>
         </div>
       </div>
